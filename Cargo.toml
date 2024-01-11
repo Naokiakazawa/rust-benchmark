@@ -10,3 +10,6 @@ edition = "2021"
 [[bench]]
 name = "test"
 harness = false
+
+[dev-dependencies]
+criterion = { version = "0.5.1", features = ["html_reports"] }

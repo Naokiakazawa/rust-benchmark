@@ -1,4 +1,4 @@
-use std::time::Instant;
+use criterion::{criterion_group, criterion_main, Criterion};
 
 fn bench_for_loop() -> u64 {
     let mut sum = 0;
@@ -12,15 +12,10 @@ fn bench_fold() -> u64 {
     (0..1000000).fold(0, |sum, i| sum + i)
 }
 
-fn main() {
-    let start = Instant::now();
-    let for_loop_result = bench_for_loop();
-    let for_loop_duration = start.elapsed();
-
-    let start = Instant::now();
-    let fold_result = bench_fold();
-    let fold_duration = start.elapsed();
-
-    println!("For loop result: {}, Time: {:?}", for_loop_result, for_loop_duration);
-    println!("Fold result: {}, Time: {:?}", fold_result, fold_duration);
+fn criterion_benchmark(c: &mut Criterion) {
+    c.bench_function("for_loop", |b| b.iter(|| bench_for_loop()));
+    c.bench_function("fold", |b| b.iter(|| bench_fold()));
 }
+
+criterion_group!(benches, criterion_benchmark);
+criterion_main!(benches);
